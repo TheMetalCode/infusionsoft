@@ -23,6 +23,10 @@ module Infusionsoft
       rescue XMLRPC::FaultException => xmlrpc_error
         # Catch all XMLRPC exceptions and rethrow specific exceptions for each type of xmlrpc fault code
         Infusionsoft::ExceptionHandler.new(xmlrpc_error)
+      rescue RuntimeError => e
+        puts e.to_s
+        puts e.backtrace.join( "\n" )
+        raise e
       end # Purposefully not catching other exceptions so that they can be handled up the stack
 
       api_logger.info "RESULT: #{result.inspect}"
